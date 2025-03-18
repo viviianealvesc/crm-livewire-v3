@@ -3,24 +3,28 @@
 namespace App\Livewire\Auth;
 
 use Livewire\Component;
+use App\Models\User;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\Rules;
 
 class Register extends Component
 {
-    #[Rule(['required', 'max:255'])]
     public ?string $name = null;
-
-    #[Rule(['required', 'email', 'max:255', 'confirmed'])]
     public ?string $email = null;
-
-    #[Rule(['required'])]
     public ?string $email_confirmation = null;
-
-    #[Rule(['required'])]
     public ?string $password = null;
+
+    protected array $rules = [
+        'name' => ['required', 'max:255'],
+        'email' => ['required', 'email', 'max:255', 'confirmed'],
+        'email_confirmation' => ['required'],
+        'password' => ['required'],
+    ];
 
     public function render()
     {
-        return view('livewire.auth.register');
+        return view('livewire.auth.register')
+              ->layout('components.layouts.guest');  //aqui está falando qual layout ele irá usar.
     }
 
     public function submit() 
@@ -35,6 +39,6 @@ class Register extends Component
 
         auth()->login($user);
 
-        $this->redirect(RouteServiceProvider::HOME);
+        $this->redirect('/');
     }
 }
