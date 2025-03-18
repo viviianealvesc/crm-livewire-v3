@@ -1,7 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use Livewire\Volt\Volt;
+use App\Livewire\Auth\Register;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Volt::route('/', 'users.index');
+Route::get('/register', Register::class)->name('auth.register');
+Route::get('/logout', 
+   fn () => tap(Auth::logout(), fn () => redirect('/'))
+);
