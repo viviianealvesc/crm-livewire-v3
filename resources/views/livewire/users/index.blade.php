@@ -12,8 +12,6 @@ new class extends Component {
 
     public bool $drawer = false;
 
-    public bool $showDrawer3 = false;
-
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
     // Clear filters
@@ -79,6 +77,9 @@ new class extends Component {
         </x-slot:actions>
     </x-header>
 
+
+    <livewire:users.create />
+    
     <!-- TABLE  -->
     <x-card>
         <x-table :headers="$headers" :rows="$users" :sort-by="$sortBy">
