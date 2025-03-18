@@ -2,6 +2,8 @@
 
 use App\Livewire\Auth\Register;
 use Livewire\Livewire;
+use App\Models\User;
+
 
 it('should render the component', function () {
     Livewire::test(Register::class)
@@ -15,14 +17,19 @@ it('should be able to register a new user in the system', function () {
         ->set('email_conformation', 'johndoe@.com') 
         ->set('password', 'password')
         ->call('submit')  //chamando o método submit (submit é o nome da função que faz o registro)
-        ->assertHasNoErrors();  //verificando se não tem erros
+        ->assertHasNoErrors()  //verificando se não tem erros
+        ->assertRedirect('/'); //verificando se redirecionou para a home
 
         assertDatabaseHas('users', [ //verificando se o usuário foi criado no banco
             'name' => 'John Doe',
             'email' => 'johndoe@.com'
         ]);
-
+        
         assertDatabaseCount('users', 1); //verificando se só tem um usuário no banco
+
+        expect(auth()->check())
+        ->and->expect(auth()->user())
+        ->id->toBe(User::first()->id);
 });
 
 test('validation rules', function ($f) {

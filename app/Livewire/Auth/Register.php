@@ -25,10 +25,16 @@ class Register extends Component
 
     public function submit() 
     {
-        User::create([
+        $this->validate();
+
+        $user = User::query()->create([
             'name' => $this->name,
             'email' => $this->email,
             'password' => $this->password,
         ]);
+
+        auth()->login($user);
+
+        $this->redirect(RouteServiceProvider::HOME);
     }
 }
