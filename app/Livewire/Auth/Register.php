@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rules;
+use App\Notifications\WelcomeNotification;
 
 class Register extends Component
 {
@@ -38,6 +39,8 @@ class Register extends Component
         ]);
 
         auth()->login($user);
+
+        $user->notify(new WelcomeNotification);
 
         $this->redirect('/');
     }
