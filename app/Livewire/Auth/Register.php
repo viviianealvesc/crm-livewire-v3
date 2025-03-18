@@ -6,10 +6,17 @@ use Livewire\Component;
 
 class Register extends Component
 {
-    public ?string $name;
-    public ?string $email;
-    public ?string $email_confirmation;
-    public ?string $password;
+    #[Rule(['required', 'max:255'])]
+    public ?string $name = null;
+
+    #[Rule(['required', 'email', 'max:255', 'confirmed'])]
+    public ?string $email = null;
+
+    #[Rule(['required'])]
+    public ?string $email_confirmation = null;
+
+    #[Rule(['required'])]
+    public ?string $password = null;
 
     public function render()
     {

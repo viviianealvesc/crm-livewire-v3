@@ -24,3 +24,19 @@ it('should be able to register a new user in the system', function () {
 
         assertDatabaseCount('users', 1); //verificando se só tem um usuário no banco
 });
+
+test('validation rules', function ($f) {
+
+    Livewire::test(Register::class)
+        ->set($f->field, $f->value)
+        ->call('submit')
+        ->assertHasErrors([$f->field => $f->rule]); 
+})->with([
+    'name::require' => (object)['field' => 'name', 'value' => '', 'rule' => 'required'], 
+    'name::max:255' => (object)['field' => 'name', 'value' => str_repeat('*', 256), 'rule' => 'max'], 
+    'email::require' => (object)['field' => 'email', 'value' => '', 'rule' => 'required'], 
+    'email::email' => (object)['field' => 'email', 'value' => 'not-an-email', 'rule' => 'required'], 
+    'email::max:255' => (object)['field' => 'email', 'value' => str('*', '@doe.com', 256), 'rule' => 'max'], 
+    'email::confirmation' => (object)['field' => 'email', 'value' => str('*', 'joe@doe.com', 256), 'rule' => 'confirmed'], 
+    'password::require' => (object)['field' => 'password', 'value' => '', 'rule' => 'required'],
+]);  // verificando se os campos são obrigatórios
