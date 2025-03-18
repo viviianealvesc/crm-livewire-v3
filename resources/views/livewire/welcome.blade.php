@@ -1,4 +1,3 @@
 <div>
-    {{-- To attain knowledge, add things every day; To attain wisdom, subtract things every day. --}}
-    aqui
+   <p class="text-red-500">Laravel</p>
 </div>
