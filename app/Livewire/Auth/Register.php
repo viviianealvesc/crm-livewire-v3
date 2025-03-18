@@ -16,7 +16,7 @@ class Register extends Component
 
     protected array $rules = [
         'name' => ['required', 'max:255'],
-        'email' => ['required', 'email', 'max:255', 'confirmed'],
+        'email' => ['required', 'email', 'max:255', 'confirmed', 'unique:users,email'],
         'email_confirmation' => ['required'],
         'password' => ['required'],
     ];

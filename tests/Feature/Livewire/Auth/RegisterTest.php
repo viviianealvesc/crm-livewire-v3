@@ -11,6 +11,8 @@ it('should render the component', function () {
 });
 
 it('should be able to register a new user in the system', function () {
+
+
     Livewire::test(Register::class) //chamando o componente
         ->set('name', 'John Doe')
         ->set('email', 'johndoe@.com') //setando os valores dos inputs
@@ -34,10 +36,21 @@ it('should be able to register a new user in the system', function () {
 
 test('validation rules', function ($f) {
 
-    Livewire::test(Register::class)
-        ->set($f->field, $f->value)
-        ->call('submit')
+    if($f->rule === 'unique') {
+        User::factory()->create([$f->field => $f->value]);
+    }
+
+    $livewire = Livewire::test(Register::class)
+        ->set($f->field, $f->value);
+
+    if(property_exists($f, 'aValue'))
+    {
+        $livewire->set($f->aField, $f->aValue);
+    }
+
+    $livewire->call('submit')
         ->assertHasErrors([$f->field => $f->rule]); 
+
 })->with([
     'name::require' => (object)['field' => 'name', 'value' => '', 'rule' => 'required'], 
     'name::max:255' => (object)['field' => 'name', 'value' => str_repeat('*', 256), 'rule' => 'max'], 
@@ -45,5 +58,6 @@ test('validation rules', function ($f) {
     'email::email' => (object)['field' => 'email', 'value' => 'not-an-email', 'rule' => 'required'], 
     'email::max:255' => (object)['field' => 'email', 'value' => str('*', '@doe.com', 256), 'rule' => 'max'], 
     'email::confirmation' => (object)['field' => 'email', 'value' => str('*', 'joe@doe.com', 256), 'rule' => 'confirmed'], 
+    'email::unique' => (object)['field' => 'email', 'value' => 'johndoe@.com', 'rule' => 'unique', 'aField' => 'email_confirmation', 'aValue' => 'johndoe@.com'],
     'password::require' => (object)['field' => 'password', 'value' => '', 'rule' => 'required'],
 ]);  // verificando se os campos são obrigatórios
