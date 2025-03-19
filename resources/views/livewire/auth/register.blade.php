@@ -8,6 +8,7 @@
         <x-slot:actions>
             <x-button label="Reset" type="reset"/>
             <x-button label="Registrar" class="btn-primary" type="submit" spinner="submit"/>
+            <x-button label="Já tenho uma conta" class="btn-primary" link="/login" spinner/>
         </x-slot:actions>
     </x-form>
 </x-card>

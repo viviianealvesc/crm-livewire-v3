@@ -43,7 +43,7 @@ class Login extends Component
     private function throttleKey(): string
     {
         //tr::translirerate() irá converter qualquer caracter especial em um caracter comum
-        return Str::translirerate(Str::lower($this->email) . '|' . $this->ip());
+        return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
     }
 
     private function ensureIsNotRateLimiting(): bool
