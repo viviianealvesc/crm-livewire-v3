@@ -12,15 +12,15 @@
         
 
         {{-- formulário de criação do cliente --}}
-        <x-form wire:submit="submit">
+        <x-form wire:submit="create">
             <x-input label="Nome" wire:model="name" />
-            <x-input label="Email" wire:model="email" />
-            <x-input label="Idade" wire:model="age" />
+            <x-input label="Email" wire:model.live="email" />
+            <x-input label="Idade" type="number" wire:model="age" />
             <x-input label="Profissão" wire:model="work" />
 
             <x-slot:actions>
                 <x-button label="Cancel" @click="$wire.showDrawer3 = false" />
-                <x-button label="Confirm" class="btn-primary" icon="o-check" />
+                <x-button type="submit" label="Confirm" class="btn-primary" icon="o-check" spinner="create"/>
             </x-slot:actions>
 
         </x-form>
