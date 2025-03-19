@@ -45,4 +45,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function givePermissionTo(string $key)
+    {
+        $this->permissions()->firstOrCreate(compact('key'));
+    }
+
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class);
+    }
+
+    public function hasPermissionTo(string $key): bool
+    {
+        return $this->permissions()->where('key', $key)->exists();
+    }
 }
