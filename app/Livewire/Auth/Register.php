@@ -30,18 +30,23 @@ class Register extends Component
 
     public function submit() 
     {
-        $this->validate();
+        // $this->validate();
 
-        $user = User::query()->create([
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => $this->password,
-        ]);
+        $verifyEmail = User::where('email', $this->email)->exists() ? $this->addError('email', 'Email já cadastrado') : null;
 
-        auth()->login($user);
+        if($verifyEmail == null)
+        {
+            $user = User::query()->create([
+                'name' => $this->name,
+                'email' => $this->email,
+                'password' => $this->password,
+            ]);
 
-        $user->notify(new WelcomeNotification);
-
-        $this->redirect('/');
+            auth()->login($user);
+    
+            $user->notify(new WelcomeNotification);
+            $this->redirect('/');
+        }
+        
     }
 }

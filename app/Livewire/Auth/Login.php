@@ -4,17 +4,15 @@ namespace App\Livewire\Auth;
 
 use Livewire\Component;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 
 class Login extends Component
 {
 
     public ?string $email = null;
     public ?string $password = null;
-
-    protected array $rules = [
-        'email' => ['required', 'email', 'max:255', 'confirmed'],
-        'password' => ['required'],
-    ];
 
     public function render()
     {
@@ -24,20 +22,41 @@ class Login extends Component
 
     public function submit() 
     {
-        if(!
+        if($this->ensureIsNotRateLimiting()) {
+            return;
+        }
 
-        
-        
-        Auth::attempt(['email' => $this->email, 'password' => $this->password])
-        
-        
-        
-        ) 
+        // Verifica se o usuário existe
+        if(!Auth::attempt(['email' => $this->email, 'password' => $this->password])) 
         {
+            RateLimiter::hit($this->throttleKey());
+
             $this->addError('InvalidCredentials', trans('auth.failed'));
 
-        } else {
-            $this->addError('email', 'Email ou senha inválidos');
+            return;
+
+        } 
+
+        $this->redirect('/');
+    }
+
+    private function throttleKey(): string
+    {
+        //tr::translirerate() irá converter qualquer caracter especial em um caracter comum
+        return Str::translirerate(Str::lower($this->email) . '|' . $this->ip());
+    }
+
+    private function ensureIsNotRateLimiting(): bool
+    {
+        // Verifica se o usuário tentou logar mais de 5 vezes
+        if (RateLimiter::tooManyAttempts($this->email, 5)) {
+            $this->addError('rateLimiter', trans('auth.throttle', [
+                'seconds' => RateLimiter::availableIn($this->email),
+            ]));
+
+            return true;
         }
+
+        return false;
     }
 }
