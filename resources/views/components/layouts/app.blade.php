@@ -46,7 +46,8 @@
                     <x-menu-separator />
                 @endif
 
-                <x-menu-item title="Hello" icon="o-sparkles" link="/" />
+                <x-menu-item title="Inicio" icon="o-home" link="/" />
+                <x-menu-item title="Clientes" icon="o-user" link="/clients" />
                 @if(!auth()->user())
                     <x-menu-item title="Logar" icon="o-sparkles" link="/login" />
                     <x-menu-item title="Register" icon="o-sparkles" link="/register" />
@@ -55,6 +56,13 @@
                     <x-menu-item title="Wifi" icon="o-wifi" link="####" />
                     <x-menu-item title="Archives" icon="o-archive-box" link="####" />
                 </x-menu-sub>
+
+                <!-- admin -->
+                @can('\App\Enum\Can::BE_AN_ADMIN->value')
+                    <x-menu-sub title="Admin" icon="o-lock-closed">
+                        <x-menu-item title="Dashboard" icon="o-chart-bar-square" :link="route('admin.dashboard')" />
+                    </x-menu-sub>
+                @endcan
             </x-menu>
         </x-slot:sidebar>
 
