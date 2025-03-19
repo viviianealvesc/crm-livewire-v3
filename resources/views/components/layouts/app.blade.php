@@ -46,7 +46,8 @@
                     <x-menu-separator />
                 @endif
 
-                <x-menu-item title="Hello" icon="o-sparkles" link="/" />
+                <x-menu-item title="Inicio" icon="o-home" link="/" />
+                <x-menu-item title="Clientes" icon="o-user" link="/clients" />
                 @if(!auth()->user())
                     <x-menu-item title="Logar" icon="o-sparkles" link="/login" />
                     <x-menu-item title="Register" icon="o-sparkles" link="/register" />

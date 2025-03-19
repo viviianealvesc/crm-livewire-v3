@@ -4,10 +4,13 @@ use Livewire\Volt\Volt;
 use App\Livewire\Auth\{Register, Login};
 use Illuminate\Support\Facades\{Route, Auth};
 use App\Enum\Can;
+use App\Livewire\Dashboard;
 
 Route::middleware('auth')->group(function () {
 
-   Volt::route('/', 'users.index')->name('dashboard');
+   Route::get('/', Dashboard::class)->name('dashboard');
+   
+   Volt::route('/clints', 'users.index')->name('clients.index');
 
    Route::get('/logout', function () {
       Auth::logout();
