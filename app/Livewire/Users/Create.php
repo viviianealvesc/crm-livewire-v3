@@ -30,7 +30,7 @@ class Create extends Component
     {
         $this->validate();
         
-        Client::create([
+        $client = Client::create([
             'name' => $this->name,
             'email' => $this->email,
             'age' => $this->age,

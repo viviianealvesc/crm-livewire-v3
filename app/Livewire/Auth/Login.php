@@ -37,6 +37,8 @@ class Login extends Component
 
         } 
 
+        session()->flash('success', 'Login efetuado com sucesso!');
+
         $this->redirect('/');
     }
 

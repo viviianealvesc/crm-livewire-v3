@@ -24,17 +24,17 @@ new class extends Component {
         $this->success('Filters cleared.', position: 'toast-bottom');
     }
 
-    // Table headers
-    public function headers(): array
-    {
-        return [
-            ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
-            ['key' => 'name', 'label' => 'Name', 'class' => 'w-64'],
-            ['key' => 'age', 'label' => 'Age', 'class' => 'w-20'],
-            ['key' => 'email', 'label' => 'E-mail', 'sortable' => false],
-            ['key' => 'work', 'label' => 'Profissão'],
-        ];
-    }
+       // Table headers
+       public function headers(): array
+       {
+           return [
+               ['key' => 'id', 'label' => '#'],
+               ['key' => 'name', 'label' => 'Name'],
+               ['key' => 'age', 'label' => 'Age'],
+               ['key' => 'email', 'label' => 'E-mail'],
+               ['key' => 'work', 'label' => 'Permissão'],
+           ];
+       }
 
     /**
      * For demo purpose, this is a static collection.
@@ -81,7 +81,6 @@ new class extends Component {
         <x-table :headers="$headers" :rows="$users" :sort-by="$sortBy">
             @scope('actions', $user)
             <livewire:alert.delete-modal :user="$user"/>
-        
             @endscope
         </x-table>
     </x-card>
@@ -95,4 +94,18 @@ new class extends Component {
             <x-button label="Done" icon="o-check" class="btn-primary" @click="$wire.drawer = false" />
         </x-slot:actions>
     </x-drawer>
+
+    @if (session()->has('success'))
+        <div 
+            x-data="{ show: true }" 
+            x-show="show" 
+            x-init="setTimeout(() => show = false, 5000)" 
+            class="fixed top-4 right-4 z-50"
+        >
+            <x-alert type="success" icon="o-home" class="alert-warning" dismissible>
+                {{ session('success') }}
+            </x-alert>
+        </div>
+    @endif
+
 </div>
