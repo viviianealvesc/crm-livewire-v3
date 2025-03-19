@@ -3,6 +3,7 @@
 use Livewire\Volt\Volt;
 use App\Livewire\Auth\{Register, Login};
 use Illuminate\Support\Facades\{Route, Auth};
+use App\Enum\Can;
 
 Route::middleware('auth')->group(function () {
 
@@ -14,7 +15,7 @@ Route::middleware('auth')->group(function () {
    });   
 
    //Admin
-   Route::prefix('/admin')->middleware('can:be-an-admin')->group(function () {
+   Route::prefix('/admin')->middleware('can:' . Can::BE_AN_ADMIN->value)->group(function () {
       Route::get('/dashboard', fn() => 'admin.dashboard')->name('admin.dashboard');
    });
 

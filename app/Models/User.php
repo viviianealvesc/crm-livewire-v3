@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Enum\Can;
+use Illuminate\Support\Facades\Cache;
 
 class User extends Authenticatable
 {
@@ -72,6 +74,7 @@ class User extends Authenticatable
 
     public function hasPermissionTo(Can|string $key): bool
     {
+        dd($key);
         $pKey = $key instanceof Can ? $key->value : $key;
 
         $permissions = Cache::get("user::{$this->id}::permissions", $this->permissions);
