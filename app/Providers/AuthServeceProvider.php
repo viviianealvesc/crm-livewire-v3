@@ -26,8 +26,12 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         //Vou ver se o usuario logado tem a permissão de administrador
-        Gate::define('be-an-admin', fn(User $user) => $user->hasPermissionTo('be-an-admin'));
-
-        // Define any additional gates or authorization logic here
+        foreach(Can::cases() as $can) {
+            Gate::define(
+                str($can->value)->snake('-')->toString(),
+                fn(User $user) => $user->hasPermissionTo($can)
+            );
+        }
+   
     }
 }

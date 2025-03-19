@@ -44,12 +44,22 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            // 'type' => Can::class
         ];
     }
 
-    public function givePermissionTo(string $key)
+    public function permissions(): BelongsToMany
     {
-        $this->permissions()->firstOrCreate(compact('key'));
+        return $this->belongsToMany(Permission::class);
+    }
+
+    public function givePermissionTo(Can|string $key)
+    {
+        // se ele for uma instancia de Can, eu vou retornar $key->value, senão 
+        // eu vou retornar $key (apenas a chave)
+        $pKey = $key instanceof Can ? $key->value : $key;
+
+        $this->permissions()->firstOrCreate(['key' => $pKey]);
 
         //toda vez que eu adicionar uma nova permissão, eu vou apagar o meu chache e 
         // procurar novamente as permissões no banco
@@ -59,17 +69,15 @@ class User extends Authenticatable
                  fn() => $this->permissions);
     }
 
-    public function permissions(): BelongsToMany
-    {
-        return $this->belongsToMany(Permission::class);
-    }
 
-    public function hasPermissionTo(string $key): bool
+    public function hasPermissionTo(Can|string $key): bool
     {
+        $pKey = $key instanceof Can ? $key->value : $key;
+
         $permissions = Cache::get("user::{$this->id}::permissions", $this->permissions);
 
         return $permissions
-                -> where('key', $key)
+                -> where('key', $pKey)
                 ->isNotEmpty();
     }
 
