@@ -24,14 +24,17 @@ class Login extends Component
 
     public function submit() 
     {
+        if(!
 
-        $user = User::where('email', $this->email)->first();
-
-        if($user) 
+        
+        
+        Auth::attempt(['email' => $this->email, 'password' => $this->password])
+        
+        
+        
+        ) 
         {
-            auth()->login($user);
-
-            return redirect('/');
+            $this->addError('InvalidCredentials', trans('auth.failed'));
 
         } else {
             $this->addError('email', 'Email ou senha inválidos');
