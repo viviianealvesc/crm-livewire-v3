@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Support\Collection;
 use Livewire\Volt\Component;
 use Mary\Traits\Toast;
+use App\Models\Client;
 
 new class extends Component {
     use Toast;
@@ -11,8 +12,8 @@ new class extends Component {
     public string $search = '';
 
     public bool $drawer = false;
-
-    public bool $showDrawer3 = false;
+    
+    public bool $myModal12 = false;
 
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
@@ -23,12 +24,6 @@ new class extends Component {
         $this->success('Filters cleared.', position: 'toast-bottom');
     }
 
-    // Delete action
-    public function delete($id): void
-    {
-        $this->warning("Will delete #$id", 'It is fake.', position: 'toast-bottom');
-    }
-
     // Table headers
     public function headers(): array
     {
@@ -37,6 +32,7 @@ new class extends Component {
             ['key' => 'name', 'label' => 'Name', 'class' => 'w-64'],
             ['key' => 'age', 'label' => 'Age', 'class' => 'w-20'],
             ['key' => 'email', 'label' => 'E-mail', 'sortable' => false],
+            ['key' => 'work', 'label' => 'Profissão'],
         ];
     }
 
@@ -48,14 +44,12 @@ new class extends Component {
      */
     public function users(): Collection
     {
-        return collect([
-            ['id' => 1, 'name' => 'Mary', 'email' => 'mary@mary-ui.com', 'age' => 23],
-            ['id' => 2, 'name' => 'Giovanna', 'email' => 'giovanna@mary-ui.com', 'age' => 7],
-            ['id' => 3, 'name' => 'Marina', 'email' => 'marina@mary-ui.com', 'age' => 5],
-        ])
-            ->sortBy([[...array_values($this->sortBy)]])
+        $clients = Client::all();
+
+        return $clients
+            ->sortBy($this->sortBy['column'], SORT_REGULAR, $this->sortBy['direction'] === 'desc')
             ->when($this->search, function (Collection $collection) {
-                return $collection->filter(fn(array $item) => str($item['name'])->contains($this->search, true));
+                return $collection->filter(fn($item) => str($item->name)->contains($this->search, true));
             });
     }
 
@@ -79,11 +73,15 @@ new class extends Component {
         </x-slot:actions>
     </x-header>
 
+
+    <livewire:users.create />
+    
     <!-- TABLE  -->
     <x-card>
         <x-table :headers="$headers" :rows="$users" :sort-by="$sortBy">
             @scope('actions', $user)
-            <x-button icon="o-trash" wire:click="delete({{ $user['id'] }})" wire:confirm="Are you sure?" spinner class="btn-ghost btn-sm text-red-500" />
+            <livewire:alert.delete-modal :user="$user"/>
+        
             @endscope
         </x-table>
     </x-card>
