@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -49,6 +50,13 @@ class User extends Authenticatable
     public function givePermissionTo(string $key)
     {
         $this->permissions()->firstOrCreate(compact('key'));
+
+        //toda vez que eu adicionar uma nova permissão, eu vou apagar o meu chache e 
+        // procurar novamente as permissões no banco
+        Cache::forget("user::{$this->id}::permissions");
+
+        Cache::remenberForever("user::{$this->id}::permissions", 
+                 fn() => $this->permissions);
     }
 
     public function permissions(): BelongsToMany
@@ -58,6 +66,12 @@ class User extends Authenticatable
 
     public function hasPermissionTo(string $key): bool
     {
-        return $this->permissions()->where('key', $key)->exists();
+        $permissions = Cache::get("user::{$this->id}::permissions", $this->permissions);
+
+        return $permissions
+                -> where('key', $key)
+                ->isNotEmpty();
     }
+
+    
 }
