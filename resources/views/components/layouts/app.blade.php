@@ -46,8 +46,14 @@
                     <x-menu-separator />
                 @endif
 
+                <x-theme-toggle class="m-4"/>
+
                 <x-menu-item title="Inicio" icon="o-home" link="/" />
-                <x-menu-item title="Clientes" icon="o-user" link="/clients" />
+                <x-menu-sub title="Clientes" icon="o-user">
+                    <x-menu-item title="Lista de clientes" icon="o-queue-list" link="/clients" />
+                    <x-menu-item title="Excluidos" icon="o-trash" link="####" />
+                    <x-menu-item title="Arquivados" icon="o-archive-box" link="####" />
+                </x-menu-sub>
                 @if(!auth()->user())
                     <x-menu-item title="Logar" icon="o-sparkles" link="/login" />
                     <x-menu-item title="Register" icon="o-sparkles" link="/register" />
