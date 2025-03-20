@@ -10,6 +10,6 @@
         </x-slot:actions>
     </x-modal>
 
-    <x-button  icon="o-trash"  @click="$wire.myModal2 = true" spinner class="btn-ghost btn-sm text-red-500"/>
+    <x-button  icon="o-trash"  @click="$wire.myModal2 = true" spinner class="btn-ghost btn-sm text-red-500" tooltip="Excluir"/>
  
 </div>

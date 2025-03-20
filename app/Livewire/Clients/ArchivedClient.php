@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\Client;
 use Illuminate\Support\Collection;
 
-class DeleteClient extends Component
+class ArchivedClient extends Component
 {
     public string $search = '';
 
@@ -56,29 +56,14 @@ class DeleteClient extends Component
         ];
     }
 
-    public function restore($id)
-    {
-        $client = Client::onlyTrashed()->findOrFail($id);
-        $client->restore();
-        
-        session()->flash('message', 'Cliente restaurado com sucesso!');
-    }
-
-    public function deletePermanently($id)
-    {
-        $client = Client::onlyTrashed()->findOrFail($id);
-        $client->forceDelete();
-
-        session()->flash('message', 'Cliente excluído permanentemente!');
-    }
-
     public function render()
     {
         $this->deletedClients = Client::onlyTrashed()->get();
 
-        return view('livewire.clients.delete-client', [
+        return view('livewire.clients.archived-client', [
             'deletedClients' => $this->deletedClients,
             'headers' => $this->headers()
         ]);
     }
+
 }

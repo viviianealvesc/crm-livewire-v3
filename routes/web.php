@@ -5,7 +5,7 @@ use App\Livewire\Auth\{Register, Login};
 use Illuminate\Support\Facades\{Route, Auth};
 use App\Enum\Can;
 use App\Livewire\Dashboard;
-use App\Livewire\Clients\DeleteClient;
+use App\Livewire\Clients\{DeleteClient, ArchivedClient};
 
 Route::middleware('auth')->group(function () {
 
@@ -13,7 +13,9 @@ Route::middleware('auth')->group(function () {
    
    Volt::route('/clients', 'clients.index')->name('clients.index');
 
-   Route::get('/detete-client', DeleteClient::class)->name('dashboard');
+   Route::get('/detete-client', DeleteClient::class)->name('clients.delete');
+
+   Route::get('/archived', ArchivedClient::class)->name('clients.archived');
 
    Route::get('/logout', function () {
       Auth::logout();

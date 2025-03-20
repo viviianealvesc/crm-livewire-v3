@@ -1,7 +1,7 @@
 <div>
 
     <!-- HEADER -->
-    <x-header title="Clientes Excluidos" separator progress-indicator>
+    <x-header title="Clientes Arquivados" separator progress-indicator>
         <x-slot:middle class="!justify-end">
             <x-input placeholder="Search..." wire:model.live.debounce="search" clearable icon="o-magnifying-glass" />
         </x-slot:middle>
@@ -14,15 +14,7 @@
     <x-card>
         <x-table :headers="$headers" :rows="$deletedClients" :sort-by="$sortBy">
             @scope('actions', $deletedClient)
-            <div class="flex space-x-1">
-                <x-button icon="o-trash" wire:click="deletePermanently({{ $deletedClient->id }})" 
-                        class="btn-ghost btn-sm text-red-500"
-                        tooltip="Excluir" spinner/>
-
-                <x-button icon="o-cloud-arrow-up" wire:click="restore({{ $deletedClient->id }})" 
-                        class="btn-ghost btn-sm text-green-500"
-                        tooltip="Restaurar" spinner/>
-            </div>
+            <livewire:alert.delete-modal :client="$deletedClient"/>cloud-arrow-up
             @endscope
         </x-table>
     </x-card>
@@ -37,15 +29,15 @@
         </x-slot:actions>
     </x-drawer>
 
-    @if (session()->has('message'))
+    @if (session()->has('success'))
         <div 
             x-data="{ show: true }" 
             x-show="show" 
             x-init="setTimeout(() => show = false, 5000)" 
             class="fixed top-4 right-4 z-50"
         >
-            <x-alert type="success" icon="o-hand-thumb-up" class="alert-warning" dismissible>
-                {{ session('message') }}
+            <x-alert type="success" icon="o-home" class="alert-warning" dismissible>
+                {{ session('success') }}
             </x-alert>
         </div>
     @endif
