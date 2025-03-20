@@ -10,7 +10,7 @@ Route::middleware('auth')->group(function () {
 
    Route::get('/', Dashboard::class)->name('dashboard');
    
-   Volt::route('/clients', 'users.index')->name('clients.index');
+   Volt::route('/clients', 'clients.index')->name('clients.index');
 
    Route::get('/logout', function () {
       Auth::logout();

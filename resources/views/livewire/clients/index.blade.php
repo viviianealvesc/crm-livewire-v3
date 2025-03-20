@@ -32,7 +32,7 @@ new class extends Component {
                ['key' => 'name', 'label' => 'Name'],
                ['key' => 'age', 'label' => 'Age'],
                ['key' => 'email', 'label' => 'E-mail'],
-               ['key' => 'work', 'label' => 'Permissão'],
+               ['key' => 'work', 'label' => 'Profissão'],
            ];
        }
 
@@ -42,7 +42,7 @@ new class extends Component {
      * On real projects you do it with Eloquent collections.
      * Please, refer to maryUI docs to see the eloquent examples.
      */
-    public function users(): Collection
+    public function clients(): Collection
     {
         $clients = Client::all();
 
@@ -56,7 +56,7 @@ new class extends Component {
     public function with(): array
     {
         return [
-            'users' => $this->users(),
+            'clients' => $this->clients(),
             'headers' => $this->headers()
         ];
     }
@@ -74,11 +74,11 @@ new class extends Component {
     </x-header>
 
 
-    <livewire:users.create />
+    <livewire:clients.create />
     
     <!-- TABLE  -->
     <x-card>
-        <x-table :headers="$headers" :rows="$users" :sort-by="$sortBy">
+        <x-table :headers="$headers" :rows="$clients" :sort-by="$sortBy">
             @scope('actions', $user)
             <livewire:alert.delete-modal :user="$user"/>
             @endscope

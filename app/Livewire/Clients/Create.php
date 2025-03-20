@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Users;
+namespace App\Livewire\Clients;
 
 use Livewire\Component;
 use App\Models\Client;
@@ -23,7 +23,7 @@ class Create extends Component
 
     public function render()
     {
-        return view('livewire.users.create');
+        return view('livewire.clients.create');
     }
 
     public function create()
