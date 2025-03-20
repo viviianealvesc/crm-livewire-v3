@@ -10,7 +10,7 @@ Route::middleware('auth')->group(function () {
 
    Route::get('/', Dashboard::class)->name('dashboard');
    
-   Volt::route('/clints', 'users.index')->name('clients.index');
+   Volt::route('/clients', 'users.index')->name('clients.index');
 
    Route::get('/logout', function () {
       Auth::logout();
@@ -26,4 +26,4 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('/register', Register::class)->name('auth.register');
-Route::get('/login', Login::class)->name('auth.login');
+Route::get('/login', Login::class)->name('login');
