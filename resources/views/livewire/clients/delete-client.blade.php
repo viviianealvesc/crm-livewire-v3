@@ -36,18 +36,4 @@
             <x-button label="Done" icon="o-check" class="btn-primary" @click="$wire.drawer = false" />
         </x-slot:actions>
     </x-drawer>
-
-    @if (session()->has('message'))
-        <div 
-            x-data="{ show: true }" 
-            x-show="show" 
-            x-init="setTimeout(() => show = false, 5000)" 
-            class="fixed top-4 right-4 z-50"
-        >
-            <x-alert type="success" icon="o-hand-thumb-up" class="alert-warning" dismissible>
-                {{ session('message') }}
-            </x-alert>
-        </div>
-    @endif
-
 </div>

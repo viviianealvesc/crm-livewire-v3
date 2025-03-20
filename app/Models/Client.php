@@ -10,4 +10,15 @@ class Client extends Model
     use SoftDeletes; 
 
     protected $guarded = [];
+
+    public function archive()
+    {
+        $this->update(['archived_at' => now()]);
+    }
+
+    public function restoreArchive()
+    {
+        $this->update(['archived_at' => null]);
+    }
+
 }

@@ -80,7 +80,16 @@ new class extends Component {
     <x-card>
         <x-table :headers="$headers" :rows="$clients" :sort-by="$sortBy">
             @scope('actions', $client)
-            <livewire:alert.delete-modal :client="$client"/>
+            <div class="flex space-x-1">
+                <livewire:alert.delete-modal :title="'Excluir Cliente'" 
+                                :description="'Deseja mesmo excluir este cliente?'" 
+                                :client="$client" :icon="'trash'" :colorIcon="'red'" :tooltip="'Excluir'" :label="'Excluir'"
+                                :function="'delete'"/>
+                <livewire:alert.delete-modal :title="'Arquivar Cliente'" 
+                                :description="'Deseja mesmo arquivar este cliente?'" 
+                                :client="$client" :icon="'archive-box-arrow-down'" :colorIcon="'green'" :tooltip="'Arquivar'" :label="'Arquivar'"
+                                :function="'ClintArchived'"/>
+            </div>
             @endscope
         </x-table>
     </x-card>
@@ -94,18 +103,4 @@ new class extends Component {
             <x-button label="Done" icon="o-check" class="btn-primary" @click="$wire.drawer = false" />
         </x-slot:actions>
     </x-drawer>
-
-    @if (session()->has('success'))
-        <div 
-            x-data="{ show: true }" 
-            x-show="show" 
-            x-init="setTimeout(() => show = false, 5000)" 
-            class="fixed top-4 right-4 z-50"
-        >
-            <x-alert type="success" icon="o-home" class="alert-warning" dismissible>
-                {{ session('success') }}
-            </x-alert>
-        </div>
-    @endif
-
 </div>

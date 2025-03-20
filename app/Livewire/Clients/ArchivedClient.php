@@ -16,6 +16,8 @@ class ArchivedClient extends Component
 
     public $deletedClients;
 
+    public $client;
+
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
     // Clear filters
@@ -56,12 +58,21 @@ class ArchivedClient extends Component
         ];
     }
 
+
+    public function restore($id)
+    {
+        $client = Client::whereNotNull('archived_at')->find($id);
+        $client->restoreArchive(); // Cliente ativo novamente
+        
+        session()->flash('message', 'Cliente restaurado com sucesso!');
+    }
+
     public function render()
     {
-        $this->deletedClients = Client::onlyTrashed()->get();
+        $archivedClients = Client::whereNotNull('archived_at')->get();
 
         return view('livewire.clients.archived-client', [
-            'deletedClients' => $this->deletedClients,
+            'archivedClients' => $archivedClients,
             'headers' => $this->headers()
         ]);
     }
