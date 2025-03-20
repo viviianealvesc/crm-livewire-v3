@@ -53,7 +53,7 @@
                 <x-menu-item title="Inicio" icon="o-home" link="/" />
                 <x-menu-sub title="Clientes" icon="o-user">
                     <x-menu-item title="Lista de clientes" icon="o-queue-list" link="/clients" />
-                    <x-menu-item title="Excluidos" icon="o-trash" link="####" />
+                    <x-menu-item title="Excluidos" icon="o-trash" link="/detete-client" />
                     <x-menu-item title="Arquivados" icon="o-archive-box" link="####" />
                 </x-menu-sub>
                 @if(!auth()->user())

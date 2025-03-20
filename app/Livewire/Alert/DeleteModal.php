@@ -9,7 +9,7 @@ class DeleteModal extends Component
 {
     public bool $myModal2 = false;
 
-    public $user;
+    public $client;
 
     public function render()
     {

@@ -1,12 +1,12 @@
 <div>
     <x-modal wire:model="myModal2" title="Deletar cliente">
         <div class="text-start">
-            Deseja mesmo deletar {{ $user->name }}?
+            Deseja mesmo deletar {{ $client->name }}?
         </div>
     
         <x-slot:actions>
             <x-button label="Cancel" @click="$wire.myModal2 = false" />
-            <x-button label="Deletar" wire:click="delete({{ $user['id'] }})" class="btn-error"  spinner/>
+            <x-button label="Deletar" wire:click="delete({{ $client['id'] }})" class="btn-error"  spinner/>
         </x-slot:actions>
     </x-modal>
 

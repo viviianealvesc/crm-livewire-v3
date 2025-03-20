@@ -64,7 +64,7 @@ new class extends Component {
 
 <div>
     <!-- HEADER -->
-    <x-header title="Hello" separator progress-indicator>
+    <x-header title="Lista de Clientes" separator progress-indicator>
         <x-slot:middle class="!justify-end">
             <x-input placeholder="Search..." wire:model.live.debounce="search" clearable icon="o-magnifying-glass" />
         </x-slot:middle>
@@ -79,8 +79,8 @@ new class extends Component {
     <!-- TABLE  -->
     <x-card>
         <x-table :headers="$headers" :rows="$clients" :sort-by="$sortBy">
-            @scope('actions', $user)
-            <livewire:alert.delete-modal :user="$user"/>
+            @scope('actions', $client)
+            <livewire:alert.delete-modal :client="$client"/>
             @endscope
         </x-table>
     </x-card>
