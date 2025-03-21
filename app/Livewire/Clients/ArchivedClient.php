@@ -17,6 +17,8 @@ class ArchivedClient extends Component
     public $deletedClients;
 
     public $client;
+    
+    protected $listeners = ['refreshTable' => 'render'];
 
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
@@ -56,15 +58,6 @@ class ArchivedClient extends Component
             'deletedClients' => $this->deletedClients(),
             'headers' => $this->headers()
         ];
-    }
-
-
-    public function restore($id)
-    {
-        $client = Client::whereNotNull('archived_at')->find($id);
-        $client->restoreArchive(); // Cliente ativo novamente
-        
-        session()->flash('message', 'Cliente restaurado com sucesso!');
     }
 
     public function render()

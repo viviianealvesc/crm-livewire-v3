@@ -12,6 +12,9 @@ class Create extends Component
     public int $age = 0;
     public string $work = '';
 
+    public $class = '';
+    public $icon = '';
+
     public bool $showDrawer3 = false;
 
     protected array $rules = [
@@ -37,7 +40,12 @@ class Create extends Component
             'work' => $this->work,
         ]);
 
-        // Optionally reset fields after creation
         $this->reset(['name', 'email', 'age', 'work']);
+
+        $this->dispatch('refreshTable');
+
+        $this->showDrawer3 = false;
+        
+        $this->success('Cliente criado com sucesso.', position: 'toast-bottom');
     }
 }

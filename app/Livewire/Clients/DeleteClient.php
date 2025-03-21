@@ -16,6 +16,8 @@ class DeleteClient extends Component
 
     public $deletedClients;
 
+    protected $listeners = ['refreshTable' => 'render'];
+
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
     // Clear filters
@@ -46,6 +48,7 @@ class DeleteClient extends Component
             ->when($this->search, function (Collection $collection) {
                 return $collection->filter(fn($item) => str($item->name)->contains($this->search, true));
             });
+        
     }
 
     public function with(): array
@@ -54,22 +57,6 @@ class DeleteClient extends Component
             'deletedClients' => $this->deletedClients(),
             'headers' => $this->headers()
         ];
-    }
-
-    public function restore($id)
-    {
-        $client = Client::onlyTrashed()->findOrFail($id);
-        $client->restore();
-        
-        session()->flash('message', 'Cliente restaurado com sucesso!');
-    }
-
-    public function deletePermanently($id)
-    {
-        $client = Client::onlyTrashed()->findOrFail($id);
-        $client->forceDelete();
-
-        session()->flash('message', 'Cliente excluído permanentemente!');
     }
 
     public function render()

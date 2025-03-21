@@ -9,9 +9,9 @@
         right
         class="w-11/12 lg:w-1/3"
     >
-        
 
         {{-- formulário de criação do cliente --}}
+
         <x-form wire:submit="create">
             <x-input label="Nome" wire:model="name" />
             <x-input label="Email" wire:model.live="email" />
@@ -27,7 +27,7 @@
     </x-drawer>
             
 
-    <x-button icon="o-plus" class="btn-primary" @click="$wire.showDrawer3 = true" />
+    <x-button :icon="$icon" :class="$class" @click="$wire.showDrawer3 = true" />
 
      
 </div>
