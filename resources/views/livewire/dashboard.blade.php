@@ -18,7 +18,7 @@
                         ->whereNull('archived_at')->count()"
                 icon="o-check-circle"
                 color="text-green-500"
-                tooltip-left="Ativos!"
+                tooltip-left="Ativos"
                 responsive
                 shadow
             />
@@ -29,7 +29,7 @@
                 title="Clientes Arquivados"
                 :value="$clients->whereNotNull('archived_at')->count()"
                 icon="o-archive-box-arrow-down"
-                tooltip-left="Arquivados!"
+                tooltip-left="Arquivados"
                 responsive
                 shadow
             />
@@ -42,7 +42,7 @@
                 icon="o-x-circle"
                 class="text-orange-500"
                 color="text-pink-500"
-                tooltip-right="Excluídos!"
+                tooltip-right="Excluídos"
                 responsive
                 shadow
             />

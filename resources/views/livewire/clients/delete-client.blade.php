@@ -15,13 +15,15 @@
         <x-table :headers="$headers" :rows="$deletedClients" :sort-by="$sortBy">
             @scope('actions', $deletedClient)
             <div class="flex space-x-1">
-                <x-button icon="o-trash" wire:click="deletePermanently({{ $deletedClient->id }})" 
-                        class="btn-ghost btn-sm text-red-500"
-                        tooltip="Excluir" spinner/>
-
-                <x-button icon="o-cloud-arrow-up" wire:click="restore({{ $deletedClient->id }})" 
-                        class="btn-ghost btn-sm text-green-500"
-                        tooltip="Restaurar" spinner/>
+                <livewire:alert.delete-modal :title="'Excluir Cliente'" 
+                                :description="'Deseja mesmo excluir este cliente?'" 
+                                :client="$deletedClient" :icon="'trash'" :colorIcon="'red'" :tooltip="'Excluir'" :label="'Excluir'"
+                                :function="'deletePermanently'" spinner/>
+                  
+                <livewire:alert.delete-modal :title="'Restaurar Cliente'" 
+                                :description="'Deseja mesmo restaurar este cliente?'" 
+                                :client="$deletedClient" :icon="'cloud-arrow-up'" :colorIcon="'green'" :tooltip="'Restaurar'" :label="'Restaurar'"
+                                :function="'restore'" spinner/>
             </div>
             @endscope
         </x-table>

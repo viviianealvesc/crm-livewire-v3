@@ -14,9 +14,10 @@
     <x-card>
         <x-table :headers="$headers" :rows="$archivedClients" :sort-by="$sortBy">
             @scope('actions', $archivedClient)
-            <x-button icon="o-cloud-arrow-up" wire:click="restore({{ $archivedClient->id }})" 
-                    class="btn-ghost btn-sm text-green-500"
-                    tooltip="Desarquivar" spinner/>
+            <livewire:alert.delete-modal :title="'Desarquivar Cliente'" 
+                                :description="'Deseja mesmo desarquivar este cliente?'" 
+                                :client="$archivedClient" :icon="'cloud-arrow-up'" :colorIcon="'green'" :tooltip="'Desarquivar'" :label="'Desarquivar'"
+                                :function="'restores'" spinner/>
             @endscope
         </x-table>
     </x-card>

@@ -82,18 +82,5 @@
 
     {{--  TOAST area --}}
     <x-toast />
-
-    @if (session()->has('success'))
-        <div 
-            x-data="{ show: true }" 
-            x-show="show" 
-            x-init="setTimeout(() => show = false, 5000)" 
-            class="fixed top-4 right-4 z-50"
-        >
-            <x-alert type="success" icon="o-home" class="alert-warning" dismissible>
-                {{ session('success') }}
-            </x-alert>
-        </div>
-    @endif
 </body>
 </html>

@@ -22,6 +22,8 @@ new class extends Component {
 
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
+    protected $listeners = ['refreshTable' => 'clients'];
+
     // Clear filters
     public function clear(): void
     {
@@ -40,20 +42,15 @@ new class extends Component {
                ['key' => 'work', 'label' => 'Profissão'],
            ];
        }
+       
 
-    /**
-     * For demo purpose, this is a static collection.
-     *
-     * On real projects you do it with Eloquent collections.
-     * Please, refer to maryUI docs to see the eloquent examples.
-     */
     public function clients(): LengthAwarePaginator 
     {
         return Client::query()
             ->whereNull('archived_at')
             ->when($this->search, fn(\Illuminate\Database\Eloquent\Builder $q) => $q->where('name', 'like', "%$this->search%"))
             ->when($this->search, fn(Builder $q) => $q->where('name', 'like', "%$this->search%"))
-            ->orderBy(...array_values($this->sortBy))
+            ->orderBy('created_at', 'desc')
             ->paginate(5);
     }
 
@@ -78,21 +75,24 @@ new class extends Component {
     </x-header>
 
 
-    <livewire:clients.create />
+    <livewire:clients.create :icon="'o-plus'" :class="'btn-primary'"/>
     
     <!-- TABLE  -->
     <x-card>
         <x-table :headers="$headers" :rows="$clients" :sort-by="$sortBy" with-pagination>
             @scope('actions', $client)
-            <div class="flex space-x-1">
-                <livewire:alert.delete-modal :title="'Excluir Cliente'" 
-                                :description="'Deseja mesmo excluir este cliente?'" 
-                                :client="$client" :icon="'trash'" :colorIcon="'red'" :tooltip="'Excluir'" :label="'Excluir'"
-                                :function="'delete'"/>
+            <div class="flex items-center space-x-1">
+                <livewire:clients.create :icon="'o-pencil-square'" :class="'btn-ghost btn-sm flex items-center justify-center'" :client="$client ?? '' "/>
+
                 <livewire:alert.delete-modal :title="'Arquivar Cliente'" 
                                 :description="'Deseja mesmo arquivar este cliente?'" 
                                 :client="$client" :icon="'archive-box-arrow-down'" :colorIcon="'green'" :tooltip="'Arquivar'" :label="'Arquivar'"
                                 :function="'ClintArchived'"/>
+
+                <livewire:alert.delete-modal :title="'Excluir Cliente'" 
+                                :description="'Deseja mesmo excluir este cliente?'" 
+                                :client="$client" :icon="'trash'" :colorIcon="'red'" :tooltip="'Excluir'" :label="'Excluir'"
+                                :function="'delete'"/>
             </div>
             @endscope
         </x-table>
@@ -107,4 +107,5 @@ new class extends Component {
             <x-button label="Done" icon="o-check" class="btn-primary" @click="$wire.drawer = false" />
         </x-slot:actions>
     </x-drawer>
+    
 </div>
