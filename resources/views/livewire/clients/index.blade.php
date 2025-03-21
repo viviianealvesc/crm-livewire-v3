@@ -2,11 +2,16 @@
 
 use App\Models\User;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Volt\Component;
 use Mary\Traits\Toast;
 use App\Models\Client;
+use Livewire\WithPagination; 
+use Illuminate\Pagination\LengthAwarePaginator; 
 
 new class extends Component {
+
+    use WithPagination; 
     use Toast;
 
     public string $search = '';
@@ -42,15 +47,14 @@ new class extends Component {
      * On real projects you do it with Eloquent collections.
      * Please, refer to maryUI docs to see the eloquent examples.
      */
-    public function clients(): Collection
+    public function clients(): LengthAwarePaginator 
     {
-        $clients = Client::whereNull('archived_at')->get();
-
-        return $clients
-            ->sortBy($this->sortBy['column'], SORT_REGULAR, $this->sortBy['direction'] === 'desc')
-            ->when($this->search, function (Collection $collection) {
-                return $collection->filter(fn($item) => str($item->name)->contains($this->search, true));
-            });
+        return Client::query()
+            ->whereNull('archived_at')
+            ->when($this->search, fn(\Illuminate\Database\Eloquent\Builder $q) => $q->where('name', 'like', "%$this->search%"))
+            ->when($this->search, fn(Builder $q) => $q->where('name', 'like', "%$this->search%"))
+            ->orderBy(...array_values($this->sortBy))
+            ->paginate(5);
     }
 
     public function with(): array
@@ -78,7 +82,7 @@ new class extends Component {
     
     <!-- TABLE  -->
     <x-card>
-        <x-table :headers="$headers" :rows="$clients" :sort-by="$sortBy">
+        <x-table :headers="$headers" :rows="$clients" :sort-by="$sortBy" with-pagination>
             @scope('actions', $client)
             <div class="flex space-x-1">
                 <livewire:alert.delete-modal :title="'Excluir Cliente'" 
