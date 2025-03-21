@@ -46,6 +46,7 @@ new class extends Component {
 
     public function clients(): LengthAwarePaginator 
     {
+        sleep(0.5);
         return Client::query()
             ->whereNull('archived_at')
             ->when($this->search, fn(\Illuminate\Database\Eloquent\Builder $q) => $q->where('name', 'like', "%$this->search%"))
@@ -75,10 +76,11 @@ new class extends Component {
     </x-header>
 
 
-    <livewire:clients.create :icon="'o-plus'" :class="'btn-primary'"/>
+
+    <livewire:clients.create :icon="'o-plus'" :class="'btn-primary'" />
     
     <!-- TABLE  -->
-    <x-card>
+    <x-card wire:loading.remove>
         <x-table :headers="$headers" :rows="$clients" :sort-by="$sortBy" with-pagination>
             @scope('actions', $client)
             <div class="flex items-center space-x-1">

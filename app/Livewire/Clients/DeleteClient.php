@@ -41,6 +41,7 @@ protected $listeners = ['refreshTable' => 'render'];
 
     public function clients(): Collection
     {
+        sleep(0.5);
         $this->deletedClients = Client::onlyTrashed()->get();
         
        return $this->deletedClients
@@ -61,6 +62,7 @@ protected $listeners = ['refreshTable' => 'render'];
 
     public function render()
     {
+        sleep(0.5);
         $this->deletedClients = Client::onlyTrashed()->get();
 
         return view('livewire.clients.delete-client', [

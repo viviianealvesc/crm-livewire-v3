@@ -43,6 +43,7 @@ class ArchivedClient extends Component
 
     public function clients(): Collection
     {
+        sleep(0.5);
         $this->deletedClients = Client::onlyTrashed()->get();
         
        return $this->deletedClients
@@ -62,6 +63,7 @@ class ArchivedClient extends Component
 
     public function render()
     {
+        sleep(0.5);
         $archivedClients = Client::whereNotNull('archived_at')->get();
 
         return view('livewire.clients.archived-client', [

@@ -75,6 +75,7 @@ class Dashboard extends Component
 
     public function render()
     {
+        sleep(0.5);
         $clients = Client::all();
 
         $this->static();
