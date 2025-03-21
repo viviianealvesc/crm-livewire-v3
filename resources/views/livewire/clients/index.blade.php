@@ -81,8 +81,8 @@ new class extends Component {
     <x-card>
         <x-table :headers="$headers" :rows="$clients" :sort-by="$sortBy" with-pagination>
             @scope('actions', $client)
-            <div class="flex space-x-1">
-                <livewire:clients.create :icon="'o-pencil-square'" :class="'btn-ghost btn-sm'" :client="$client"/>
+            <div class="flex items-center space-x-1">
+                <livewire:clients.create :icon="'o-pencil-square'" :class="'btn-ghost btn-sm flex items-center justify-center'" :client="$client ?? '' "/>
 
                 <livewire:alert.delete-modal :title="'Arquivar Cliente'" 
                                 :description="'Deseja mesmo arquivar este cliente?'" 

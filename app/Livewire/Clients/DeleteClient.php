@@ -16,7 +16,7 @@ class DeleteClient extends Component
 
     public $deletedClients;
 
-    protected $listeners = ['refreshTable' => 'render'];
+protected $listeners = ['refreshTable' => 'render'];
 
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
