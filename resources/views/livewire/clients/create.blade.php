@@ -1,7 +1,3 @@
-@php 
- $permissions = ['Admin', 'User'];
-@endphp
-
 <div class="flex justify-end m-4">
     <x-drawer
         wire:model="showDrawer3"
@@ -20,15 +16,7 @@
             <x-input label="Nome" wire:model="name" />
             <x-input label="Email" wire:model.live="email" />
             <x-input label="Idade" type="number" wire:model="age" />
-            <x-select
-                label="Permissão"
-                :options="collect($permissions)->map(fn($permission) => ['custom_key' => $permission, 'other_name' => $permission])->toArray()"
-                option-value="custom_key"
-                option-label="other_name"
-                placeholder="Selecionar permissão"
-                placeholder-value="0" {{-- Set a value for placeholder. Default is `null` --}}
-                hint="Select one, please."
-                wire:model="work" />
+            <x-input label="Profissão" wire:model="work" />
 
             <x-slot:actions>
                 <x-button label="Cancel" @click="$wire.showDrawer3 = false" />

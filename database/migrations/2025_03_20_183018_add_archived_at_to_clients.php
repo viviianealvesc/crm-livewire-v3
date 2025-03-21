@@ -6,23 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->datetime('deleted_at');
+            $table->timestamp('archived_at')->nullable(); // Cliente começa como "não arquivado"
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    
+    public function down()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->dropColumn('deleted_at');
+            $table->dropColumn('archived_at');
         });
     }
 };

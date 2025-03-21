@@ -53,8 +53,8 @@
                 <x-menu-item title="Inicio" icon="o-home" link="/" />
                 <x-menu-sub title="Clientes" icon="o-user">
                     <x-menu-item title="Lista de clientes" icon="o-queue-list" link="/clients" />
-                    <x-menu-item title="Excluidos" icon="o-trash" link="####" />
-                    <x-menu-item title="Arquivados" icon="o-archive-box" link="####" />
+                    <x-menu-item title="Excluidos" icon="o-trash" link="/detete-client" />
+                    <x-menu-item title="Arquivados" icon="o-archive-box" link="/archived" />
                 </x-menu-sub>
                 @if(!auth()->user())
                     <x-menu-item title="Logar" icon="o-sparkles" link="/login" />
@@ -82,5 +82,18 @@
 
     {{--  TOAST area --}}
     <x-toast />
+
+    @if (session()->has('success'))
+        <div 
+            x-data="{ show: true }" 
+            x-show="show" 
+            x-init="setTimeout(() => show = false, 5000)" 
+            class="fixed top-4 right-4 z-50"
+        >
+            <x-alert type="success" icon="o-home" class="alert-warning" dismissible>
+                {{ session('success') }}
+            </x-alert>
+        </div>
+    @endif
 </body>
 </html>

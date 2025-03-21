@@ -30,9 +30,9 @@ new class extends Component {
            return [
                ['key' => 'id', 'label' => '#'],
                ['key' => 'name', 'label' => 'Name'],
-               ['key' => 'age', 'label' => 'Age'],
+               ['key' => 'age', 'label' => 'Idade'],
                ['key' => 'email', 'label' => 'E-mail'],
-               ['key' => 'work', 'label' => 'Permissão'],
+               ['key' => 'work', 'label' => 'Profissão'],
            ];
        }
 
@@ -42,9 +42,9 @@ new class extends Component {
      * On real projects you do it with Eloquent collections.
      * Please, refer to maryUI docs to see the eloquent examples.
      */
-    public function users(): Collection
+    public function clients(): Collection
     {
-        $clients = Client::all();
+        $clients = Client::whereNull('archived_at')->get();
 
         return $clients
             ->sortBy($this->sortBy['column'], SORT_REGULAR, $this->sortBy['direction'] === 'desc')
@@ -56,7 +56,7 @@ new class extends Component {
     public function with(): array
     {
         return [
-            'users' => $this->users(),
+            'clients' => $this->clients(),
             'headers' => $this->headers()
         ];
     }
@@ -64,7 +64,7 @@ new class extends Component {
 
 <div>
     <!-- HEADER -->
-    <x-header title="Hello" separator progress-indicator>
+    <x-header title="Lista de Clientes" separator progress-indicator>
         <x-slot:middle class="!justify-end">
             <x-input placeholder="Search..." wire:model.live.debounce="search" clearable icon="o-magnifying-glass" />
         </x-slot:middle>
@@ -74,13 +74,22 @@ new class extends Component {
     </x-header>
 
 
-    <livewire:users.create />
+    <livewire:clients.create />
     
     <!-- TABLE  -->
     <x-card>
-        <x-table :headers="$headers" :rows="$users" :sort-by="$sortBy">
-            @scope('actions', $user)
-            <livewire:alert.delete-modal :user="$user"/>
+        <x-table :headers="$headers" :rows="$clients" :sort-by="$sortBy">
+            @scope('actions', $client)
+            <div class="flex space-x-1">
+                <livewire:alert.delete-modal :title="'Excluir Cliente'" 
+                                :description="'Deseja mesmo excluir este cliente?'" 
+                                :client="$client" :icon="'trash'" :colorIcon="'red'" :tooltip="'Excluir'" :label="'Excluir'"
+                                :function="'delete'"/>
+                <livewire:alert.delete-modal :title="'Arquivar Cliente'" 
+                                :description="'Deseja mesmo arquivar este cliente?'" 
+                                :client="$client" :icon="'archive-box-arrow-down'" :colorIcon="'green'" :tooltip="'Arquivar'" :label="'Arquivar'"
+                                :function="'ClintArchived'"/>
+            </div>
             @endscope
         </x-table>
     </x-card>
@@ -94,18 +103,4 @@ new class extends Component {
             <x-button label="Done" icon="o-check" class="btn-primary" @click="$wire.drawer = false" />
         </x-slot:actions>
     </x-drawer>
-
-    @if (session()->has('success'))
-        <div 
-            x-data="{ show: true }" 
-            x-show="show" 
-            x-init="setTimeout(() => show = false, 5000)" 
-            class="fixed top-4 right-4 z-50"
-        >
-            <x-alert type="success" icon="o-home" class="alert-warning" dismissible>
-                {{ session('success') }}
-            </x-alert>
-        </div>
-    @endif
-
 </div>
