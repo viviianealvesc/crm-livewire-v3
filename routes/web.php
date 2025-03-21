@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
 
    Route::get('/logout', function () {
       Auth::logout();
-      return redirect()->route('auth.login');
+      return redirect()->route('login');
    });   
 
    //Admin

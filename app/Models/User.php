@@ -74,7 +74,6 @@ class User extends Authenticatable
 
     public function hasPermissionTo(Can|string $key): bool
     {
-        dd($key);
         $pKey = $key instanceof Can ? $key->value : $key;
 
         $permissions = Cache::get("user::{$this->id}::permissions", $this->permissions);
