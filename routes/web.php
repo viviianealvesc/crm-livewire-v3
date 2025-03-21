@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\{Route, Auth};
 use App\Enum\Can;
 use App\Livewire\Dashboard;
 use App\Livewire\Clients\{DeleteClient, ArchivedClient};
+use App\Livewire\Users\Show;
 
 Route::middleware('auth')->group(function () {
 
@@ -24,7 +25,7 @@ Route::middleware('auth')->group(function () {
 
    //Admin
    Route::prefix('/admin')->middleware('can:' . Can::BE_AN_ADMIN->value)->group(function () {
-      Route::get('/dashboard', fn() => 'admin.dashboard')->name('admin.dashboard');
+      Route::get('/dashboard', Show::class)->name('admin.users');
    });
 
 });
