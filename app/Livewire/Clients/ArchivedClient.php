@@ -33,7 +33,7 @@ class ArchivedClient extends Component
            return [
                ['key' => 'id', 'label' => '#'],
                ['key' => 'name', 'label' => 'Name'],
-               ['key' => 'age', 'label' => 'Age'],
+               ['key' => 'age', 'label' => 'Idade'],
                ['key' => 'email', 'label' => 'E-mail'],
                ['key' => 'work', 'label' => 'Profissão'],
            ];

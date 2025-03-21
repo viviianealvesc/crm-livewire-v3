@@ -30,7 +30,7 @@ new class extends Component {
            return [
                ['key' => 'id', 'label' => '#'],
                ['key' => 'name', 'label' => 'Name'],
-               ['key' => 'age', 'label' => 'Age'],
+               ['key' => 'age', 'label' => 'Idade'],
                ['key' => 'email', 'label' => 'E-mail'],
                ['key' => 'work', 'label' => 'Profissão'],
            ];
@@ -44,7 +44,7 @@ new class extends Component {
      */
     public function clients(): Collection
     {
-        $clients = Client::all();
+        $clients = Client::whereNull('archived_at')->get();
 
         return $clients
             ->sortBy($this->sortBy['column'], SORT_REGULAR, $this->sortBy['direction'] === 'desc')

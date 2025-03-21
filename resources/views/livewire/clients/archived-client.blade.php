@@ -14,8 +14,7 @@
     <x-card>
         <x-table :headers="$headers" :rows="$archivedClients" :sort-by="$sortBy">
             @scope('actions', $archivedClient)
-            <!-- <livewire:alert.delete-modal :archived="$archivedClient"/>cloud-arrow-up -->
-            <x-button icon="o-cloud-arrow-up" wire:click="restore({{ $deletedClient->id }})" 
+            <x-button icon="o-cloud-arrow-up" wire:click="restore({{ $archivedClient->id }})" 
                     class="btn-ghost btn-sm text-green-500"
                     tooltip="Desarquivar" spinner/>
             @endscope
