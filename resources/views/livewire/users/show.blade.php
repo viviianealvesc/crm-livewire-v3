@@ -17,7 +17,14 @@
     <!-- TABLE  -->
     <x-card wire:loading.remove>
         <x-table :headers="$headers" :rows="$users" :sort-by="$sortBy" with-pagination>
-            @scope('actions', $user)
+        
+        @scope('cell_permission', $user)
+            @foreach($user->permissions as $permission)
+                <x-badge :value="$permission->key" class="badge-warning"/>
+            @endforeach
+        @endscope
+
+        @scope('actions', $user)
             <div class="flex items-center space-x-1">
                 <x-button icon="o-pencil-square" class="btn-ghost btn-sm flex items-center justify-center" />
 
@@ -25,7 +32,8 @@
 
                 <x-button icon="o-trash" class="btn-ghost btn-sm flex items-center justify-center text-red-500" />
             </div>
-            @endscope
+        @endscope
+
         </x-table>
     </x-card>
 
