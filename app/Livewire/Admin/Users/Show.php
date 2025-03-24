@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Users;
+namespace App\Livewire\Admin\Users;
 
 use Livewire\Component;
 use App\Models\User;
@@ -23,6 +23,11 @@ class Show extends Component
 
     protected $listeners = ['refreshTable' => 'clients'];
 
+    public function mount(): void
+    {
+        $this->authorize('be an admin');
+    }
+
     // Clear filters
     public function clear(): void
     {
@@ -36,9 +41,8 @@ class Show extends Component
            return [
                ['key' => 'id', 'label' => '#'],
                ['key' => 'name', 'label' => 'Name'],
-               ['key' => 'age', 'label' => 'Idade'],
                ['key' => 'email', 'label' => 'E-mail'],
-               ['key' => 'work', 'label' => 'Profissão'],
+               ['key' => 'permission', 'label' => 'Permissão'],
            ];
        }
        
@@ -51,7 +55,7 @@ class Show extends Component
             ->when($this->search, fn(\Illuminate\Database\Eloquent\Builder $q) => $q->where('name', 'like', "%$this->search%"))
             ->when($this->search, fn(Builder $q) => $q->where('name', 'like', "%$this->search%"))
             ->orderBy('created_at', 'desc')
-            ->paginate(5);
+           ;
     }
 
     public function with(): array
@@ -64,7 +68,7 @@ class Show extends Component
    
     public function render()
     {
-        $users = User::all();
+        $users = User::query()->paginate(5);
 
         return view('livewire.users.show', [
             'users' => $users,

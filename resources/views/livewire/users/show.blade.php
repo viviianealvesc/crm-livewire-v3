@@ -19,11 +19,11 @@
         <x-table :headers="$headers" :rows="$users" :sort-by="$sortBy" with-pagination>
             @scope('actions', $user)
             <div class="flex items-center space-x-1">
-                <x-button icon="o-pencil-square" class="btn-ghost btn-sm flex items-center justify-center" label="Editar" />
+                <x-button icon="o-pencil-square" class="btn-ghost btn-sm flex items-center justify-center" />
 
-                <x-button icon="o-archive-box-arrow-down" class="btn-ghost btn-sm flex items-center justify-center text-green-500" label="Arquivar" />
+                <x-button icon="o-archive-box-arrow-down" class="btn-ghost btn-sm flex items-center justify-center text-green-500" />
 
-                <x-button icon="o-trash" class="btn-ghost btn-sm flex items-center justify-center text-red-500" label="Excluir" />
+                <x-button icon="o-trash" class="btn-ghost btn-sm flex items-center justify-center text-red-500" />
             </div>
             @endscope
         </x-table>
@@ -39,4 +39,5 @@
         </x-slot:actions>
     </x-drawer>
     
+   {{ $users->links() }}
 </div>

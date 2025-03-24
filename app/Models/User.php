@@ -9,12 +9,16 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Enum\Can;
 use Illuminate\Support\Facades\Cache;
+use Livewire\WithPagination; 
+use Illuminate\Pagination\LengthAwarePaginator; 
+
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    use WithPagination;
     /**
      * The attributes that are mass assignable.
      *
