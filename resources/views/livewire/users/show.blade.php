@@ -13,10 +13,10 @@
 
 
     <livewire:clients.create :icon="'o-plus'" :class="'btn-primary'" />
-    
+
     <!-- TABLE  -->
     <x-card wire:loading.remove>
-        <x-table :headers="$headers" :rows="$users" :sort-by="$sortBy" with-pagination>
+        <x-table :headers="$headers" :rows="$users" :sort-by="$sortBy" with-pagination>        
         
         @scope('cell_permission', $user)
             @foreach($user->permissions as $permission)

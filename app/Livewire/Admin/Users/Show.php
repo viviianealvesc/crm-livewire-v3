@@ -3,17 +3,21 @@
 namespace App\Livewire\Admin\Users;
 
 use Livewire\Component;
-use App\Models\User;
+use App\Models\{User, Permission};
 use Mary\Traits\Toast;
 use Livewire\WithPagination; 
 use Illuminate\Pagination\LengthAwarePaginator; 
+use \Illuminate\Database\Eloquent;
+use Illuminate\Database\Query\Builder;
 
 class Show extends Component
 {
     use WithPagination; 
     use Toast;
 
-    public string $search = '';
+    public ?string $search = null;
+
+    public array $search_permissions = [];
 
     public bool $drawer = false;
     
@@ -47,16 +51,22 @@ class Show extends Component
        }
        
 
-    public function users(): LengthAwarePaginator 
+    #[Computed]
+    public function users(): Collection 
     {
-        sleep(0.5);
+        $this->validate(['search_permissions' => 'exists:permissions,id']);
+
         return User::query()
-            ->with('permissions')
-            ->whereNull('archived_at')
-            ->when($this->search, fn(\Illuminate\Database\Eloquent\Builder $q) => $q->where('name', 'like', "%$this->search%"))
-            ->when($this->search, fn(Builder $q) => $q->where('name', 'like', "%$this->search%"))
-            ->orderBy('created_at', 'desc')
-           ;
+        ->when($this->search, fn(Builder $q) => $q->where(BD::raw('LOWER(name)'), 
+           'LIKE', '%' . strtolower($this->search) . '%')
+        ->orWhere('email', 'like', '%' . strtolower($this->search) . '%'))
+        ->when($this->search_permissions, fn(Builder $q) => $q->whereRaw(
+            '(select count(*) 
+            from permissions_user 
+            where permission_id in (?)
+            and user_id = users.id) > 0', $this->search_permissions
+        ))
+        ->get();
     }
 
     public function with(): array
@@ -66,6 +76,7 @@ class Show extends Component
             'headers' => $this->headers()
         ];
     }
+
    
     public function render()
     {
