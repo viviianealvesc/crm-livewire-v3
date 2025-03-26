@@ -60,12 +60,11 @@ class Show extends Component
         ->when($this->search, fn(Builder $q) => $q->where(BD::raw('LOWER(name)'), 
            'LIKE', '%' . strtolower($this->search) . '%')
         ->orWhere('email', 'like', '%' . strtolower($this->search) . '%'))
-        ->when($this->search_permissions, fn(Builder $q) => $q->whereRaw(
-            '(select count(*) 
-            from permissions_user 
-            where permission_id in (?)
-            and user_id = users.id) > 0', $this->search_permissions
-        ))
+        ->when(
+            $this->search_permissions, 
+            fn(Builder $q) => $q->whereHas('permissions', function(Builder $query){
+                $query->whereIn('id', $this->search_permissions);
+            }))
         ->get();
     }
 
