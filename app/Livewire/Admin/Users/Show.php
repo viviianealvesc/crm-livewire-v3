@@ -55,21 +55,20 @@ class Show extends Component
        }
        
 
-    #[Computed]
-    public function users(): Collection 
+    public function users(): LengthAwarePaginator
     {
         $this->validate(['search_permissions' => 'exists:permissions,id']);
 
         return User::query()
-        ->when($this->search, fn(Builder $q) => $q->where(BD::raw('LOWER(name)'), 
-           'LIKE', '%' . strtolower($this->search) . '%')
-        ->orWhere('email', 'like', '%' . strtolower($this->search) . '%'))
-        ->when(
-            $this->search_permissions, 
-            fn(Builder $q) => $q->whereHas('permissions', function(Builder $query){
-                $query->whereIn('id', $this->search_permissions);
-            }))
-        ->get();
+            ->when($this->search, fn(Builder $q) => $q->where(DB::raw('LOWER(name)'), 
+                'LIKE', '%' . strtolower($this->search) . '%')
+                ->orWhere('email', 'like', '%' . strtolower($this->search) . '%'))
+            ->when(
+                $this->search_permissions, 
+                fn(Builder $q) => $q->whereHas('permissions', function(Builder $query) {
+                    $query->whereIn('id', $this->search_permissions);
+                }))
+            ->paginate(10);
     }
 
 

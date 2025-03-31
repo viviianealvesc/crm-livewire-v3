@@ -1,24 +1,19 @@
 
 <div>
     <!-- HEADER -->
-    <x-header title="Lista de Usuários" separator progress-indicator>
-        <x-slot:middle class="!justify-end">
-            <x-input placeholder="Search..." wire:model.live.debounce="search" clearable icon="o-magnifying-glass" />
-        </x-slot:middle>
-        <x-slot:actions>
-            <x-button label="Filters" @click="$wire.drawer = true" responsive icon="o-funnel" />
-        </x-slot:actions> 
-        
+    <x-header title="Lista de Usuários" separator progress-indicator>   
     </x-header>
 
+    <div class="grid grid-cols-3 gap-4 items-center">
+        <x-input placeholder="Search..." wire:model.live.debounce.500ms="search" clearable icon="o-magnifying-glass" />
 
-   
-        <x-choices label="Search by permissions" class="select-sm" placeholder="Filtrar por permissão" wire:model.live="search_permissions"
-                    :options="$permissionsToSearch" option-label="key" search-function="filterPermissions" 
-                    searchable no-result-text="nothing name"/>
+        <x-choices class="select-xs" placeholder="Filter by permission" wire:model.live="search_permissions"
+                   :options="$permissionsToSearch" option-label="key" 
+                   searchable no-result-text="No results found" />
+
+        <livewire:clients.create :icon="'o-plus'" :class="'btn-primary'" />
+    </div>
   
-
-    <livewire:clients.create :icon="'o-plus'" :class="'btn-primary'" />
 
     <!-- TABLE  -->
     <x-card wire:loading.remove>
