@@ -95,7 +95,7 @@ class Show extends Component
     {
         $users = User::with('permissions')->paginate(10);
 
-        return view('livewire.users.show', [
+        return view('livewire.admin.users.show', [
             'users' => $users,
             'headers' => $this->headers()
         ]);
