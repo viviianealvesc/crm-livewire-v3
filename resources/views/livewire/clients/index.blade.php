@@ -54,7 +54,7 @@ new class extends Component {
             ->orderBy('created_at', 'desc')
             ->paginate(5);
     }
-
+ 
     public function with(): array
     {
         return [

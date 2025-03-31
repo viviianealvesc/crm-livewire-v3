@@ -7,15 +7,22 @@
         </x-slot:middle>
         <x-slot:actions>
             <x-button label="Filters" @click="$wire.drawer = true" responsive icon="o-funnel" />
-        </x-slot:actions>
+        </x-slot:actions> 
+        
     </x-header>
 
 
+   
+        <x-choices label="Search by permissions" class="select-sm" placeholder="Filtrar por permissão" wire:model.live="search_permissions"
+                    :options="$permissionsToSearch" option-label="key" search-function="filterPermissions" 
+                    searchable no-result-text="nothing name"/>
+  
 
     <livewire:clients.create :icon="'o-plus'" :class="'btn-primary'" />
 
     <!-- TABLE  -->
     <x-card wire:loading.remove>
+
         <x-table :headers="$headers" :rows="$users" :sort-by="$sortBy" with-pagination>        
         
         @scope('cell_permission', $user)

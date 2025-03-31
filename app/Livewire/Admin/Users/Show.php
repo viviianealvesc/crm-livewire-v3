@@ -9,6 +9,8 @@ use Livewire\WithPagination;
 use Illuminate\Pagination\LengthAwarePaginator; 
 use \Illuminate\Database\Eloquent;
 use Illuminate\Database\Query\Builder;
+use App\Models\Admin;
+use Illuminate\Support\Collection;
 
 class Show extends Component
 {
@@ -19,7 +21,7 @@ class Show extends Component
 
     public array $search_permissions = [];
 
-    public bool $drawer = false;
+    public  $permissionsToSearch;
     
     public bool $myModal12 = false;
 
@@ -30,6 +32,8 @@ class Show extends Component
     public function mount(): void
     {
         $this->authorize('be an admin');
+
+        $this->filterPermissions();
     }
 
     // Clear filters
@@ -68,6 +72,17 @@ class Show extends Component
         ->get();
     }
 
+
+    public function filterPermissions(?string $value = null): void
+    {
+    
+        $this->permissionsToSearch = Permission::query()
+            ->when($value, fn(Builder $q) => $q->where('key', 'like', '%' . $value . '%'))
+            ->orderBy('key')
+            ->get();
+   
+    }
+    
     public function with(): array
     {
         return [
