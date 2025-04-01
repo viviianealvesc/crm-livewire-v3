@@ -19,12 +19,13 @@
                     <livewire:alert.delete-modal :title="'Excluir Cliente'" 
                                     :description="'Deseja mesmo excluir este cliente?'" 
                                     :client="$deletedClient" :icon="'trash'" :colorIcon="'red'" :tooltip="'Excluir'" :label="'Excluir'"
-                                    :function="'deletePermanently'" spinner/>
+                                    :function="'deletePermanently'"/>
                     
                     <livewire:alert.delete-modal :title="'Restaurar Cliente'" 
                                     :description="'Deseja mesmo restaurar este cliente?'" 
-                                    :client="$deletedClient" :icon="'cloud-arrow-up'" :colorIcon="'green'" :tooltip="'Restaurar'" :label="'Restaurar'"
-                                    :function="'restore'" spinner/>
+                                    :client="$deletedClient" :icon="'cloud-arrow-up'" :colorIcon="'green'" :tooltip="'Restaurar'" 
+                                    :label="'Restaurar'"
+                                    :function="'restore'"/>
                 </div>
                 @endscope
             @endcan
@@ -33,11 +34,13 @@
 
     <!-- FILTER DRAWER -->
     <x-drawer wire:model="drawer" title="Filters" right separator with-close-button class="lg:w-1/3">
-        <x-input placeholder="Search..." wire:model.live.debounce="search" icon="o-magnifying-glass" @keydown.enter="$wire.drawer = false" />
+        <x-input placeholder="Search..." wire:model.live.debounce="search" icon="o-magnifying-glass" 
+                 @keydown.enter="$wire.drawer = false" />
 
         <x-slot:actions>
             <x-button label="Reset" icon="o-x-mark" wire:click="clear" spinner />
-            <x-button label="Done" icon="o-check" class="btn-primary" @click="$wire.drawer = false" />
+            <x-button label="Done" icon="o-check" class="btn-primary" 
+                      @click="$wire.drawer = false" />
         </x-slot:actions>
     </x-drawer>
 </div>

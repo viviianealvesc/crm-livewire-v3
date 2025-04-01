@@ -26,7 +26,7 @@
     </x-drawer>
             
 
-    <x-button :icon="$icon" :class="$class" @click="$wire.showDrawer3 = true" />
+    <x-button :icon="$icon" :class="$class" @click="$wire.showDrawer3 = true" spinner/>
 
      
 </div>

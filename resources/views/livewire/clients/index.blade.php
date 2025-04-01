@@ -46,7 +46,6 @@ new class extends Component {
 
     public function clients(): LengthAwarePaginator 
     {
-        sleep(0.5);
         return Client::query()
             ->whereNull('archived_at')
             ->when($this->search, fn(\Illuminate\Database\Eloquent\Builder $q) => $q->where('name', 'like', "%$this->search%"))
@@ -104,7 +103,8 @@ new class extends Component {
 
     <!-- FILTER DRAWER -->
     <x-drawer wire:model="drawer" title="Filters" right separator with-close-button class="lg:w-1/3">
-        <x-input placeholder="Search..." wire:model.live.debounce="search" icon="o-magnifying-glass" @keydown.enter="$wire.drawer = false" />
+        <x-input placeholder="Search..." wire:model.live.debounce="search" icon="o-magnifying-glass"
+           @keydown.enter="$wire.drawer = false" />
 
         <x-slot:actions>
             <x-button label="Reset" icon="o-x-mark" wire:click="clear" spinner />
