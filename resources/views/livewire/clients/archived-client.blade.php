@@ -17,8 +17,8 @@
                 @scope('actions', $archivedClient)
                 <livewire:alert.delete-modal :title="'Desarquivar Cliente'" 
                                     :description="'Deseja mesmo desarquivar este cliente?'" 
-                                    :client="$archivedClient" :icon="'cloud-arrow-up'" :colorIcon="'green'" :tooltip="'Desarquivar'" :label="'Desarquivar'"
-                                    :function="'restores'"/>
+                                    :client="$archivedClient" :icon="'cloud-arrow-up'" :colorIcon="'green'" 
+                                    :tooltip="'Desarquivar'" label="'Desarquivar'" :function="'restores'"/>
                 @endscope
             @endcan
         </x-table>

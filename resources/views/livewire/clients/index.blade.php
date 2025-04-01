@@ -88,8 +88,8 @@ new class extends Component {
 
                     <livewire:alert.delete-modal :title="'Arquivar Cliente'" 
                                     :description="'Deseja mesmo arquivar este cliente?'" 
-                                    :client="$client" :icon="'archive-box-arrow-down'" :colorIcon="'green'" :tooltip="'Arquivar'" :label="'Arquivar'"
-                                    :function="'ClintArchived'"/>
+                                    :client="$client" :icon="'archive-box-arrow-down'" :colorIcon="'green'" 
+                                    :tooltip="'Arquivar'" :label="'Arquivar'" :function="'ClintArchived'"/>
 
                     <livewire:alert.delete-modal :title="'Excluir Cliente'" 
                                     :description="'Deseja mesmo excluir este cliente?'" 
