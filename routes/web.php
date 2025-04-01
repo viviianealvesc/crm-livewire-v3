@@ -7,6 +7,7 @@ use App\Enum\Can;
 use App\Livewire\Dashboard;
 use App\Livewire\Clients\{DeleteClient, ArchivedClient};
 use App\Livewire\Admin\Users\Show;
+use App\Livewire\Admin\Permission;
 
 Route::middleware('auth')->group(function () {
 
@@ -26,6 +27,7 @@ Route::middleware('auth')->group(function () {
    //Admin
    Route::prefix('/admin')->middleware('can:be an admin')->group(function () {
       Route::get('/users', Show::class)->name('admin.users');
+      Route::get('/permission', Permission::class)->name('admin.permission');
    });
 
 });

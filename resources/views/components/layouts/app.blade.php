@@ -69,6 +69,7 @@
                 @can('be an admin')
                     <x-menu-sub title="Admin" icon="o-lock-closed">
                         <x-menu-item title="Usuários" icon="o-users" :link="route('admin.users')" />
+                        <x-menu-item title="Permissões" icon="o-users" :link="route('admin.permission')" />
                     </x-menu-sub>
                 @endcan
             </x-menu>
