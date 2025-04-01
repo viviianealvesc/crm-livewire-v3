@@ -13,12 +13,14 @@
     <!-- TABLE  -->
     <x-card>
         <x-table :headers="$headers" :rows="$archivedClients" :sort-by="$sortBy">
-            @scope('actions', $archivedClient)
-            <livewire:alert.delete-modal :title="'Desarquivar Cliente'" 
-                                :description="'Deseja mesmo desarquivar este cliente?'" 
-                                :client="$archivedClient" :icon="'cloud-arrow-up'" :colorIcon="'green'" :tooltip="'Desarquivar'" :label="'Desarquivar'"
-                                :function="'restores'" spinner/>
-            @endscope
+            @can('be an admin')
+                @scope('actions', $archivedClient)
+                <livewire:alert.delete-modal :title="'Desarquivar Cliente'" 
+                                    :description="'Deseja mesmo desarquivar este cliente?'" 
+                                    :client="$archivedClient" :icon="'cloud-arrow-up'" :colorIcon="'green'" :tooltip="'Desarquivar'" :label="'Desarquivar'"
+                                    :function="'restores'" spinner/>
+                @endscope
+            @endcan
         </x-table>
     </x-card>
 

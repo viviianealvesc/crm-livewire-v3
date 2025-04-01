@@ -13,19 +13,21 @@
     <!-- TABLE  -->
     <x-card>
         <x-table :headers="$headers" :rows="$deletedClients" :sort-by="$sortBy">
-            @scope('actions', $deletedClient)
-            <div class="flex space-x-1">
-                <livewire:alert.delete-modal :title="'Excluir Cliente'" 
-                                :description="'Deseja mesmo excluir este cliente?'" 
-                                :client="$deletedClient" :icon="'trash'" :colorIcon="'red'" :tooltip="'Excluir'" :label="'Excluir'"
-                                :function="'deletePermanently'" spinner/>
-                  
-                <livewire:alert.delete-modal :title="'Restaurar Cliente'" 
-                                :description="'Deseja mesmo restaurar este cliente?'" 
-                                :client="$deletedClient" :icon="'cloud-arrow-up'" :colorIcon="'green'" :tooltip="'Restaurar'" :label="'Restaurar'"
-                                :function="'restore'" spinner/>
-            </div>
-            @endscope
+            @can('be an admin')
+                @scope('actions', $deletedClient)
+                <div class="flex space-x-1">
+                    <livewire:alert.delete-modal :title="'Excluir Cliente'" 
+                                    :description="'Deseja mesmo excluir este cliente?'" 
+                                    :client="$deletedClient" :icon="'trash'" :colorIcon="'red'" :tooltip="'Excluir'" :label="'Excluir'"
+                                    :function="'deletePermanently'" spinner/>
+                    
+                    <livewire:alert.delete-modal :title="'Restaurar Cliente'" 
+                                    :description="'Deseja mesmo restaurar este cliente?'" 
+                                    :client="$deletedClient" :icon="'cloud-arrow-up'" :colorIcon="'green'" :tooltip="'Restaurar'" :label="'Restaurar'"
+                                    :function="'restore'" spinner/>
+                </div>
+                @endscope
+            @endcan
         </x-table>
     </x-card>
 
