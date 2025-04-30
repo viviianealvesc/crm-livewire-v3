@@ -13,6 +13,10 @@
     <!-- TABLE  -->
     <x-card>
         <x-table :headers="$headers" :rows="$archivedClients" :sort-by="$sortBy">
+            @scope('header_name', $header)
+               {{$header['label']}} 👌
+            @endscope
+
             @can('be an admin')
                 @scope('actions', $archivedClient)
                 <livewire:alert.delete-modal :title="'Desarquivar Cliente'" 
