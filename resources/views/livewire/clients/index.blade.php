@@ -81,6 +81,10 @@ new class extends Component {
     
     <x-checkbox label="Usuários deletados" wire:model.live="search_trash" />
     <livewire:clients.create :icon="'o-plus'" :class="'btn-primary'" />
+
+    @php 
+     /** @var \App\Models\Clients $custumers */
+    @endphp
     
     <!-- TABLE  -->
     <x-card wire:loading.remove>
@@ -94,10 +98,17 @@ new class extends Component {
                                 :client="$client" :icon="'archive-box-arrow-down'" :colorIcon="'green'" :tooltip="'Arquivar'" :label="'Arquivar'"
                                 :function="'ClintArchived'"/>
 
+                @unless($client->trashed())
                 <livewire:alert.delete-modal :title="'Excluir Cliente'" 
                                 :description="'Deseja mesmo excluir este cliente?'" 
                                 :client="$client" :icon="'trash'" :colorIcon="'red'" :tooltip="'Excluir'" :label="'Excluir'"
                                 :function="'delete'"/>
+                @else
+                <livewire:alert.delete-modal :title="'Desarquivar Cliente'" 
+                                :description="'Deseja mesmo desarquivar este cliente?'" 
+                                :client="$client" :icon="'cloud-arrow-up'" :colorIcon="'green'" :tooltip="'Desarquivar'" :label="'Desarquivar'"
+                                :function="'restores'" spinner/>
+                @endunless
             </div>
             @endscope
         </x-table>
