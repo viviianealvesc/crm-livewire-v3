@@ -89,6 +89,10 @@ new class extends Component {
     <!-- TABLE  -->
     <x-card wire:loading.remove>
         <x-table :headers="$headers" :rows="$clients" :sort-by="$sortBy" with-pagination>
+            @scope('header_name', $header)
+                {{ $header['label'] }} 🐾
+            @endscope
+            
             @scope('actions', $client)
             <div class="flex items-center space-x-1">
                 <livewire:clients.create :icon="'o-pencil-square'" :class="'btn-ghost btn-sm flex items-center justify-center'" :client="$client ?? '' "/>
