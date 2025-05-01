@@ -24,6 +24,8 @@ new class extends Component {
 
     protected $listeners = ['refreshTable' => 'clients'];
 
+    public bool $search_trash = false;
+
     // Clear filters
     public function clear(): void
     {
@@ -49,8 +51,8 @@ new class extends Component {
         sleep(0.5);
         return Client::query()
             ->whereNull('archived_at')
-            ->when($this->search, fn(\Illuminate\Database\Eloquent\Builder $q) => $q->where('name', 'like', "%$this->search%"))
             ->when($this->search, fn(Builder $q) => $q->where('name', 'like', "%$this->search%"))
+            ->when($this->search_trash, fn(Builder $q) => $q->onlyTrashed())
             ->orderBy('created_at', 'desc')
             ->paginate(5);
     }
@@ -67,16 +69,17 @@ new class extends Component {
 <div>
     <!-- HEADER -->
     <x-header title="Lista de Clientes" separator progress-indicator>
-        <x-slot:middle class="!justify-end">
+        <x-slot:middle class="!justify-end !flex">
             <x-input placeholder="Search..." wire:model.live.debounce="search" clearable icon="o-magnifying-glass" />
         </x-slot:middle>
         <x-slot:actions>
             <x-button label="Filters" @click="$wire.drawer = true" responsive icon="o-funnel" />
         </x-slot:actions>
     </x-header>
-
-
-
+    
+    
+    
+    <x-checkbox label="Usuários deletados" wire:model.live="search_trash" />
     <livewire:clients.create :icon="'o-plus'" :class="'btn-primary'" />
     
     <!-- TABLE  -->
