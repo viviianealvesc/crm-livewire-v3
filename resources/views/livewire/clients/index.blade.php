@@ -48,12 +48,10 @@ new class extends Component {
 
     public function clients(): LengthAwarePaginator 
     {
-        sleep(0.5);
         return Client::query()
             ->whereNull('archived_at')
             ->when($this->search, fn(Builder $q) => $q->where('name', 'like', "%$this->search%"))
             ->when($this->search_trash, fn(Builder $q) => $q->onlyTrashed())
-            ->orderBy('created_at', 'desc')
             ->paginate(5);
     }
 

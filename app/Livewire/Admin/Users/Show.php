@@ -7,6 +7,7 @@ use App\Models\User;
 use Mary\Traits\Toast;
 use Livewire\WithPagination; 
 use Illuminate\Pagination\LengthAwarePaginator; 
+use Illuminate\Database\Eloquent\Builder;
 
 class Show extends Component
 {
@@ -53,10 +54,8 @@ class Show extends Component
         return User::query()
             ->with('permissions')
             ->whereNull('archived_at')
-            ->when($this->search, fn(\Illuminate\Database\Eloquent\Builder $q) => $q->where('name', 'like', "%$this->search%"))
             ->when($this->search, fn(Builder $q) => $q->where('name', 'like', "%$this->search%"))
-            ->orderBy('created_at', 'desc')
-           ;
+            ->when($this->search, fn(Builder $q) => $q->where('name', 'like', "%$this->search%"));
     }
 
     public function with(): array
