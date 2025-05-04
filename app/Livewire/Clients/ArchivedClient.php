@@ -33,7 +33,7 @@ class ArchivedClient extends Component
        public function headers(): array
        {
            return [
-               ['key' => 'id', 'label' => '#'],
+               ['key' => 'id', 'label' => '#', 'class' => 'bg-red-500/20 w-1'],
                ['key' => 'name', 'label' => 'Name'],
                ['key' => 'age', 'label' => 'Idade'],
                ['key' => 'email', 'label' => 'E-mail'],

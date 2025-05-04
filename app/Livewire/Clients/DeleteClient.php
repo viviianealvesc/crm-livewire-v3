@@ -16,7 +16,7 @@ class DeleteClient extends Component
 
     public $deletedClients;
 
-protected $listeners = ['refreshTable' => 'render'];
+    protected $listeners = ['refreshTable' => 'render'];
 
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
@@ -31,7 +31,7 @@ protected $listeners = ['refreshTable' => 'render'];
        public function headers(): array
        {
            return [
-               ['key' => 'id', 'label' => '#'],
+               ['key' => 'id', 'label' => '#', 'class' => 'bg-red-500/20 w-1'],
                ['key' => 'name', 'label' => 'Name'],
                ['key' => 'age', 'label' => 'Idade'],
                ['key' => 'email', 'label' => 'E-mail'],

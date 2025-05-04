@@ -24,6 +24,8 @@ new class extends Component {
 
     protected $listeners = ['refreshTable' => 'clients'];
 
+    public bool $search_trash = false;
+
     // Clear filters
     public function clear(): void
     {
@@ -46,12 +48,10 @@ new class extends Component {
 
     public function clients(): LengthAwarePaginator 
     {
-        sleep(0.5);
         return Client::query()
             ->whereNull('archived_at')
-            ->when($this->search, fn(\Illuminate\Database\Eloquent\Builder $q) => $q->where('name', 'like', "%$this->search%"))
             ->when($this->search, fn(Builder $q) => $q->where('name', 'like', "%$this->search%"))
-            ->orderBy('created_at', 'desc')
+            ->when($this->search_trash, fn(Builder $q) => $q->onlyTrashed())
             ->paginate(5);
     }
 
@@ -67,21 +67,30 @@ new class extends Component {
 <div>
     <!-- HEADER -->
     <x-header title="Lista de Clientes" separator progress-indicator>
-        <x-slot:middle class="!justify-end">
+        <x-slot:middle class="!justify-end !flex">
             <x-input placeholder="Search..." wire:model.live.debounce="search" clearable icon="o-magnifying-glass" />
         </x-slot:middle>
         <x-slot:actions>
             <x-button label="Filters" @click="$wire.drawer = true" responsive icon="o-funnel" />
         </x-slot:actions>
     </x-header>
-
-
-
+    
+    
+    
+    <x-checkbox label="Usuários deletados" wire:model.live="search_trash" />
     <livewire:clients.create :icon="'o-plus'" :class="'btn-primary'" />
+
+    @php 
+     /** @var \App\Models\Clients $custumers */
+    @endphp
     
     <!-- TABLE  -->
     <x-card wire:loading.remove>
         <x-table :headers="$headers" :rows="$clients" :sort-by="$sortBy" with-pagination>
+            @scope('header_name', $header)
+                {{ $header['label'] }} 🐾
+            @endscope
+            
             @scope('actions', $client)
             <div class="flex items-center space-x-1">
                 <livewire:clients.create :icon="'o-pencil-square'" :class="'btn-ghost btn-sm flex items-center justify-center'" :client="$client ?? '' "/>
@@ -91,10 +100,17 @@ new class extends Component {
                                 :client="$client" :icon="'archive-box-arrow-down'" :colorIcon="'green'" :tooltip="'Arquivar'" :label="'Arquivar'"
                                 :function="'ClintArchived'"/>
 
+                @unless($client->trashed())
                 <livewire:alert.delete-modal :title="'Excluir Cliente'" 
                                 :description="'Deseja mesmo excluir este cliente?'" 
                                 :client="$client" :icon="'trash'" :colorIcon="'red'" :tooltip="'Excluir'" :label="'Excluir'"
                                 :function="'delete'"/>
+                @else
+                <livewire:alert.delete-modal :title="'Desarquivar Cliente'" 
+                                :description="'Deseja mesmo desarquivar este cliente?'" 
+                                :client="$client" :icon="'cloud-arrow-up'" :colorIcon="'green'" :tooltip="'Desarquivar'" :label="'Desarquivar'"
+                                :function="'restores'" spinner/>
+                @endunless
             </div>
             @endscope
         </x-table>
