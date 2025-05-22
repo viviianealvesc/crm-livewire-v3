@@ -46,8 +46,7 @@ class DeleteModal extends Component
     
     public function restores($id)
     {
-        $client = Client::whereNotNull('archived_at')->find($id);
-        $client->restoreArchive(); // Cliente ativo novamente
+        $client = Client::select('id')->onlyTrashed()->find($id);
         
         $this->dispatch('refreshTable');
 
