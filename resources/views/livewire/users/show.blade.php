@@ -26,11 +26,18 @@
 
         @scope('actions', $user)
             <div class="flex items-center space-x-1">
-                <x-button icon="o-pencil-square" class="btn-ghost btn-sm flex items-center justify-center" />
+                <x-button 
+                    id="impersonate-btn-{{ $user->id }}"
+                    key="impersonate-btn-{{ $user->id }}"
+                    icon="o-eye" 
+                    @click="$dispatch('user::impersonate', { id: {{ $user->id }} })"
+                    class="btn-ghost btn-sm" />
+                
+                <x-button icon="o-pencil-square" class="btn-ghost btn-sm" />
 
-                <x-button icon="o-archive-box-arrow-down" class="btn-ghost btn-sm flex items-center justify-center text-green-500" />
+                <x-button icon="o-archive-box-arrow-down" class="btn-ghost btn-sm text-green-500" />
 
-                <x-button icon="o-trash" class="btn-ghost btn-sm flex items-center justify-center text-red-500" />
+                <x-button icon="o-trash" class="btn-ghost btn-sm text-red-500" />
             </div>
         @endscope
 
@@ -48,4 +55,6 @@
     </x-drawer>
     
    {{ $users->links() }}
+
+   <livewire:admin.users.impersonate />
 </div>
