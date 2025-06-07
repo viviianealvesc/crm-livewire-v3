@@ -18,9 +18,10 @@ class StopImpersonate extends Component
 
     public function stopImpersonate()
     {
-        
         session()->forget('impersonate');
 
         return redirect('admin/users');
     }
 }
+
+
