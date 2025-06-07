@@ -46,7 +46,7 @@ class Show extends Component
                ['key' => 'permission', 'label' => 'Permissão'],
            ];
        }
-       
+
 
     public function users(): LengthAwarePaginator 
     {
