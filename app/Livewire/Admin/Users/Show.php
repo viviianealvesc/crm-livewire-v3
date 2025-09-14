@@ -8,17 +8,20 @@ use Mary\Traits\Toast;
 use Livewire\WithPagination; 
 use Illuminate\Pagination\LengthAwarePaginator; 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Http;
 
 class Show extends Component
 {
     use WithPagination; 
     use Toast;
 
-    public string $search = '';
-
     public bool $drawer = false;
     
     public bool $myModal12 = false;
+
+        public array $formInputs = [];
+
+        public array $books = [];
 
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
@@ -27,6 +30,59 @@ class Show extends Component
     public function mount(): void
     {
         $this->authorize('be an admin');
+    }
+
+    public function addForm()
+    {
+        $this->formInputs[] = [
+            'name' => '', 
+            'email' => ''
+        ];
+
+
+    }
+
+    public function removeForm($index)
+    {
+        unset($this->formInputs[$index]);
+        $this->formInputs = array_values($this->formInputs); // reorganiza os índices
+    }
+
+    public function search(string $value = '')
+    {
+        $response = Http::get('https://www.googleapis.com/books/v1/volumes', [
+            'q' => $value,
+            'maxResults' => 10,
+        ]);
+
+        $this->books = collect($response->json()['items'] ?? [])
+            ->map(function ($item) {
+                return [
+                    'value' => $item['id'] ?? null,
+                    'name' => $item['volumeInfo']['title'] ?? '',
+                ];
+            })
+            ->toArray();
+    }
+
+
+    public function save()
+    {
+        dd($this->formInputs);
+        
+        foreach ($this->formInputs as $data) {
+            // Validação (você pode usar rules mais específicas)
+            if (!empty($data['name']) && !empty($data['email'])) {
+                User::create([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                ]);
+            }
+        }
+
+        session()->flash('success', 'Formulários salvos com sucesso!');
+        $this->reset('formInputs');
+        $this->mount(); // Adiciona um formulário vazio novamente
     }
 
     // Clear filters

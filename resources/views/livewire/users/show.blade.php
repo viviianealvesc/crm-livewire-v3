@@ -44,6 +44,40 @@
         </x-table>
     </x-card>
 
+   <div>
+    @foreach ($formInputs as $index => $form)
+        <div class="mb-4 border p-4 rounded shadow">
+            <x-choices
+                label="Searchable + Single"
+                wire:model.live="formInputs.{{ $index }}.name"
+                :options="$books"
+                option-value="value"
+                option-name="name"
+                placeholder="Search ..."
+                single
+                searchable />
+
+        <p>
+            @foreach($books as $book)
+                {{ $book['value'] ?? '' }}@if(!$loop->last), @endif
+            @endforeach
+        </p>
+            <button wire:click="removeForm({{ $index }})" class="text-red-500 mt-2">Remover</button>
+        </div>
+    @endforeach
+
+    <button wire:click="addForm" class="bg-blue-500 text-white px-4 py-2 rounded">Adicionar formulário</button>
+
+    <button wire:click="save" class="bg-green-500 text-white px-4 py-2 rounded mt-4">Salvar todos</button>
+
+    @if (session()->has('success'))
+        <div class="text-green-600 mt-4">
+            {{ session('success') }}
+        </div>
+    @endif
+</div>
+
+
     <!-- FILTER DRAWER -->
     <x-drawer wire:model="drawer" title="Filters" right separator with-close-button class="lg:w-1/3">
         <x-input placeholder="Search..." wire:model.live.debounce="search" icon="o-magnifying-glass" @keydown.enter="$wire.drawer = false" />
