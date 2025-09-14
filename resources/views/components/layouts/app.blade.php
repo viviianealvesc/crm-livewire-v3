@@ -13,11 +13,14 @@
 <body class="min-h-screen font-sans antialiased bg-base-200/50 dark:bg-base-200">
 
 
-            @if(session('impersonate'))
+    @if(session('impersonate'))
+        <livewire:admin.users.stop-impersonate />
+    @endif
+    
+    @if(!app()->environment('production'))
+        <livewire:dev.login />
+    @endif
 
-               <livewire:admin.users.stop-impersonate />
-            
-            @endif
 
 
     {{-- NAVBAR mobile only --}}
